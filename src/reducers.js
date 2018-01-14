@@ -1,26 +1,31 @@
 import { combineReducers } from 'redux'
 
 import {
+    SET_ACCOUNT_CREATED,
+    SET_USER,
     UPDATE_CURRENT_ADDRESS,
-    UPDATE_USER_ADDRESS,
     UPDATE_WEB3,
     UPDATE_ETHER_PROFILE_INSTANCE,
   } from './actions'
 
 function user(state = {}, action) {
     switch(action.type) {
-        case UPDATE_USER_ADDRESS:
-            return {
-                ...state,
-                address: action.address,
-            };
+        case SET_USER:
+          return {
+            ...action.user
+          };
         default:
-            return state;
+          return state;
     }
 }
 
 function core(state = {}, action) {
   switch (action.type) {
+    case SET_ACCOUNT_CREATED:
+      return {
+        ...state,
+        accountCreated: action.accountCreated,
+      }
     case UPDATE_CURRENT_ADDRESS:
       return {
         ...state,

@@ -4,9 +4,10 @@ import getWeb3 from './utils/getWeb3'
 import { connect } from 'react-redux'
 
 import {
+  setAccountCreated,
+  setUser,
   updateCurrentAddress,
   updateEtherProfileInstance,
-  updateUserAddress,
   updateWeb3,
 } from './actions'
 
@@ -20,8 +21,9 @@ class App extends Component {
   static propTypes = {
     updateCurrentAddress: React.PropTypes.func,
     updateEtherProfileInstance: React.PropTypes.func,
-    updateUserAddress: React.PropTypes.func,
     updateWeb3: React.PropTypes.func,
+    setAccountCreated: React.PropTypes.func,
+    setUser: React.PropTypes.func,
   };
 
   constructor(props) {
@@ -29,7 +31,7 @@ class App extends Component {
 
     this.state = {
       storageValue: 0,
-      web3: null
+      web3: null,
     }
   }
 
@@ -70,23 +72,38 @@ class App extends Component {
     this.state.web3.eth.getAccounts((error, accounts) => {
       currentAddress = accounts[0];
       this.props.updateCurrentAddress(currentAddress)
-      this.props.updateUserAddress(currentAddress)
     });
 
     etherProfile.deployed().then((instance) => {
       this.props.updateEtherProfileInstance(instance);
-      console.log('**** etherProfile deployed');
-      
+
       instance.getProfile(currentAddress).then((res, err) => {
-        if(!err) {
-          console.log("***** success getProfile");
+        // Profile did not exist
+        if(
+          !err &&
+          res[0] !== "0x0000000000000000000000000000000000000000"
+        ) {
+          // TODO: for some reason this doesn't set user
+          // on the /me page
+          console.log("**** getProfile success");
           console.log(res);
+          this.props.setAccountCreated(true);
+          this.props.setUser({
+            name: res[2],
+            imgurl: res[3],
+            contact: res[4],
+            aboutMe: res[5],
+          });
         } else {
-          console.log("**** error getProfile");
+          console.log("**** getProfile failure");
+          console.log(res);
           console.log(err);
+          this.props.setAccountCreated(false);
         }
       });
     });
+
+    this.props.setAccountCreated(false);
   }
 
   render() {
@@ -105,12 +122,15 @@ const mapDispatchToProps = dispatch => {
     updateEtherProfileInstance: address => {
       dispatch(updateEtherProfileInstance(address))
     },
-    updateUserAddress: address => {
-      dispatch(updateUserAddress(address))
-    },
     updateWeb3: web3 => {
       dispatch(updateWeb3(web3))
     },
+    setAccountCreated: accountCreated => {
+      dispatch(setAccountCreated(accountCreated))
+    },
+    setUser: user => {
+      dispatch(setUser(user))
+    }
   }
 }
 

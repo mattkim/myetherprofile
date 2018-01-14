@@ -19,9 +19,13 @@ var routes = (
       <div>
         <App/>
         <Header/>
-        <Route exact path="/" component={Home}/>
-        <Route exact path="/profile" component={Profile}/>
-        <Route exact path="/me" component={Me}/>
+        <div style={{
+          
+        }}>
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/profile/:address" component={Profile}/>
+          <Route exact path="/me" component={Me}/>
+        </div>
       </div>
     </Router>
   </Provider>
