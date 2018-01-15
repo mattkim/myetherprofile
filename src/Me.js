@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
 
+import {getEtherProfile, updateEtherProfile} from './utils/contracts';
+
 import {
   setAccountCreated,
   setUser,
@@ -45,7 +47,7 @@ class Me extends Component {
         name: "",
         aboutMe: "",
         contact: "",
-        imgurlInput: "",
+        imgurl: "",
     }
 
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -68,42 +70,34 @@ class Me extends Component {
   }
 
   handleImgUrlChange(e) {
-    this.setState({imgurlInput: e.target.value});
+    this.setState({imgurl: e.target.value});
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     const name = this.state.name || this.props.user.name || "";
-    const imgurl = this.state.imgurlInput || this.props.user.imgurl || "";
+    const imgurl = this.state.imgurl || this.props.user.imgurl || "";
     const contact = this.state.contact || this.props.user.contact || "";
     const aboutMe = this.state.aboutMe || this.props.user.aboutMe || "";
     
-    this.props.etherProfileInstance.updateProfile(
+    const res = await updateEtherProfile(
+      this.props.currentAddress,
       name,
       imgurl,
       contact,
       aboutMe,
-      {
-        from: this.props.currentAddress,
-      }
-    ).then((res,err) => {
-      console.log("***** after update profile");
-      console.log(res);
-      if(res) {
-        this.props.setUser({
-          name,
-          imgurl,
-          contact,
-          aboutMe,
-        });
+    );
+    
+    if(res) {
+      this.props.setUser(res);
+    }
 
-        this.setState({
-          name,
-          imgurl,
-          contact,
-          aboutMe,
-        });
-      }
-    });
+    // Reset state
+    this.setState({
+      name: "",
+      aboutMe: "",
+      contact: "",
+      imgurl: "",
+    })
   }
   
   render() {
@@ -112,6 +106,7 @@ class Me extends Component {
         <Grid style={{
           margin: "0px",
           padding: "10px",
+          "margin-top": "50px",
           "margin-bottom": "20px",
         }}>
             <Row className="show-grid">
@@ -123,16 +118,17 @@ class Me extends Component {
                       width: "200px",
                     }}/>
                     <br/>
-                    Address: <Link to={"/profile/" + this.props.currentAddress}>{this.props.currentAddress}</Link><br/>
+                    Address: {this.props.currentAddress}<br/>
+                    <Link to={"/profile/" + this.props.currentAddress}>View public profile</Link><br/>
                     <br/>
-                    Image URL:<br/>
-                    <FormControl placeholder="No image" type="text" value={this.state.imgurlInput || this.props.user.imgurl} onChange={this.handleImgUrlChange}/><br/>
-                    Name:<br/>
-                    <FormControl placeholder="Anonymous" type="text" value={this.state.name || this.props.user.name} onChange={this.handleNameChange}/><br/>
-                    Contact:<br/>
-                    <FormControl placeholder="No contact" type="text" value={this.state.contact || this.props.user.contact} onChange={this.handleContactChange}/><br/>
-                    About Me:<br/>
-                    <FormControl placeholder="No description" componentClass="textarea" value={this.state.aboutMe || this.props.user.aboutMe} onChange={this.handleAboutMeChange}/><br/>
+                    Image URL: {this.props.user.imgurl || "No image"}<br/>
+                    <FormControl placeholder="Image URL" type="text" value={this.state.imgurl} onChange={this.handleImgUrlChange}/><br/>
+                    Name: {this.props.user.name || "Anonymous"}<br/>
+                    <FormControl placeholder="Name" type="text" value={this.state.name} onChange={this.handleNameChange}/><br/>
+                    Contact: {this.props.user.contact || "No contact"}<br/>
+                    <FormControl placeholder="Contact" type="text" value={this.state.contact} onChange={this.handleContactChange}/><br/>
+                    About Me: {this.props.user.aboutMe || "No about me"}<br/>
+                    <FormControl placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
 
                     <Button onClick={this.handleSubmit}>Submit</Button>
                 </Col>

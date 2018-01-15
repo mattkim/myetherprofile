@@ -4,6 +4,8 @@ import getWeb3 from './utils/getWeb3'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'; 
 
+import {getWeb3js, getEtherContractInstance, getEtherProfile} from './utils/contracts';
+
 import {
   setAccountCreated,
   setUser,
@@ -34,90 +36,31 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    console.log("***** this is app");
-    console.log(this.props);
-
-    this.state = {
-      storageValue: 0,
-      web3: null,
-      etherProfileInstance: null,
-    }
+    this.state = {}
   }
 
   componentWillMount() {
-    // Get network provider and web3 instance.
-    // See utils/getWeb3 for more info.
-
-    getWeb3
-    .then(results => {
-      this.setState({
-        web3: results.web3
-      })
-
-      this.props.updateWeb3(results.web3);
-
-      // Instantiate contract once web3 provided.
-      this.instantiateContract()
-    })
-    .catch(() => {
-      console.log('Error finding web3.')
-    })
+    this.instantiateContract();
   }
 
-  instantiateContract() {
+  async instantiateContract() {
     /*
      * SMART CONTRACT EXAMPLE
      *
      * Normally these functions would be called in the context of a
      * state management library, but for convenience I've placed them here.
      */
+    const web3 = await getWeb3js();
+    let currentAddress;
 
-    const contract = require('truffle-contract')
-    const etherProfile = contract(EtherProfileContract)
-    etherProfile.setProvider(this.state.web3.currentProvider)
-
-    let currentAddress = "";
-
-    this.state.web3.eth.getAccounts((error, accounts) => {
+    web3.eth.getAccounts((error, accounts) => {
       currentAddress = accounts[0];
       this.props.updateCurrentAddress(currentAddress)
     });
-
-    etherProfile.deployed().then((instance) => {
-      this.props.updateEtherProfileInstance(instance);
-      this.setState({etherProfileInstance: instance});
-
-      instance.getProfile(currentAddress).then((res, err) => {
-        // Profile did not exist
-        if(
-          !err &&
-          res[0] !== "0x0000000000000000000000000000000000000000"
-        ) {
-          // TODO: for some reason this doesn't set user
-          // on the /me page
-          console.log("**** getProfile success");
-          console.log(res);
-          this.props.setAccountCreated(true);
-          this.props.setUser({
-            name: res[2],
-            imgurl: res[3],
-            contact: res[4],
-            aboutMe: res[5],
-          });
-        } else {
-          console.log("**** getProfile failure");
-          console.log(res);
-          console.log(err);
-          this.props.setAccountCreated(false);
-        }
-      });
-
-      // TODO: try to get current address of profile here.
-      console.log("****** after ethprofile deployed");
-      console.log(this.props);
-    });
-
-    this.props.setAccountCreated(false);
+    
+    const instance = await getEtherContractInstance(web3);
+    const profile = await getEtherProfile(currentAddress, instance);
+    this.props.setUser(profile);
   }
 
   render() {
@@ -126,18 +69,7 @@ class App extends Component {
         <Header/>
         <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
         <Route path="/me" render={(props) => (<Me {...props}/>)}/>
-        <Route path="/profile/:address" render={(props) => {
-          if (this.state.etherProfileInstance) {
-            return (
-              <Profile
-                etherProfileInstance={this.state.etherProfileInstance}
-                {...props}
-              />
-            )
-          } else {
-            return (<Profile {...props}/>);
-          }
-        }}/>
+        <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>
       </div>
     );
   }

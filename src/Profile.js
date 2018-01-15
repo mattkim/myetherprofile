@@ -54,12 +54,15 @@ class Profile extends Component {
   }
 
   setProfile(res) {
+    // TODO: image doesn't seem to update right away.
+    // TODO: because i need to both dual
+    // TODO: handle empty account
     if(res) {
       this.setState({
-        profileName: res.name,
-        profileImgurl: res.imgurl,
-        profileContact: res.contact,
-        profileAboutMe: res.aboutMe,
+        profileName: res.name || "Anonymous",
+        profileImgurl: res.imgurl || "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
+        profileContact: res.contact || "No contact",
+        profileAboutMe: res.aboutMe || "No description",
       });
     } else {
       this.setDefaultProfile(this.props.match.params.address);
@@ -92,6 +95,7 @@ class Profile extends Component {
         <Grid style={{
           margin: "0px",
           padding: "10px",
+          "margin-top": "50px",
           "margin-bottom": "20px",
         }}>
             <Row className="show-grid">
