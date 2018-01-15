@@ -86,25 +86,21 @@ class Me extends Component {
         from: this.props.currentAddress,
       }
     ).then((res,err) => {
-      if(!err) {
-        this.props.etherProfileInstance.getProfile(
-          this.props.currentAddress,
-        ).then((res, err) => {
-          this.props.setAccountCreated(true);
+      console.log("***** after update profile");
+      console.log(res);
+      if(res) {
+        this.props.setUser({
+          name,
+          imgurl,
+          contact,
+          aboutMe,
+        });
 
-          this.props.setUser({
-            name,
-            imgurl,
-            contact,
-            aboutMe,
-          });
-
-          this.setState({
-            name,
-            imgurl,
-            contact,
-            aboutMe,
-          });
+        this.setState({
+          name,
+          imgurl,
+          contact,
+          aboutMe,
         });
       }
     });

@@ -13,23 +13,32 @@ import Me from './Me'
 
 const store = createStore(reducers);
 
+// Old way
+// var routes = (
+//   <Provider store={store}>
+//     <Router>
+//       <div>
+//         <App/>
+//         <Header/>
+//         <div style={{
+          
+//         }}>
+//           <Route exact path="/" component={Home}/>
+//           <Route exact path="/profile/:address" component={Profile}/>
+//           <Route exact path="/me" component={Me}/>
+//         </div>
+//       </div>
+//     </Router>
+//   </Provider>
+// );
+
 var routes = (
   <Provider store={store}>
     <Router>
-      <div>
-        <App/>
-        <Header/>
-        <div style={{
-          
-        }}>
-          <Route exact path="/" component={Home}/>
-          <Route exact path="/profile/:address" component={Profile}/>
-          <Route exact path="/me" component={Me}/>
-        </div>
-      </div>
+      <Route path="/" component={App}/>
     </Router>
   </Provider>
-);
+)
 
 ReactDOM.render(
   routes,

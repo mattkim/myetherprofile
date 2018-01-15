@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
-
+import { simple, getEtherProfile } from './utils/contracts';
 import {
 	Grid,
 	Row,
@@ -31,61 +31,47 @@ class Profile extends Component {
         profileAddress: "",
         transferAmount: 0,
         message: "",
-        profile: {},
+        profileName: "",
+        profileImgurl: "",
+        profileContact: "",
+        profileAboutMe: "",
     }
   }
 
-  componentWillReceiveProps() {
-    this.getProfile();
+  async componentWillMount() {
+    const res = await getEtherProfile(this.props.match.params.address);
+    this.setProfile(res);
   }
 
-  componentWillMount() {
-    this.getProfile();
+  async componentWillReceiveProps() {
+    const res = await getEtherProfile(this.props.match.params.address);
+    this.setProfile(res);
   }
 
-  componentDidMount() {
-    this.getProfile();
+  async componentDidMount() {
+    const res = await getEtherProfile(this.props.match.params.address);
+    this.setProfile(res);
   }
 
-  getProfile() {
-    const address = this.props.match.params.address;
-    this.setState({profileAddress: address});
-
-    if(this.props.etherProfileInstance) {
-      this.props.etherProfileInstance.getProfile(
-        address,
-      ).then((res, err) => {
-        if(
-          !err && 
-          res[0] !== "0x0000000000000000000000000000000000000000"
-        ) {
-          this.setState({
-            profile: {
-              address,
-              name: res[2],
-              imgurl: res[3],
-              contact: res[4],
-              aboutMe: res[5],
-            }
-          });
-        } else {
-          this.setDefaultProfile(address);
-        }
+  setProfile(res) {
+    if(res) {
+      this.setState({
+        profileName: res.name,
+        profileImgurl: res.imgurl,
+        profileContact: res.contact,
+        profileAboutMe: res.aboutMe,
       });
-    } else{
-      this.setDefaultProfile(address);
+    } else {
+      this.setDefaultProfile(this.props.match.params.address);
     }
   }
 
   setDefaultProfile(address) {
     this.setState({
-      profile: {
-        address,
-        imgurl: "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
-        name: "Anonymous",
-        aboutMe: "No description",
-        contact: "No contact",
-      }
+      profileImgurl: "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
+      profileName: "Anonymous",
+      profileAboutMe: "No description",
+      profileContact: "No contact",
     });
   }
 
@@ -111,18 +97,18 @@ class Profile extends Component {
             <Row className="show-grid">
                 <Col xs={3} sm={3} md={4}/>
                 <Col xs={6} sm={6} md={4}>
-                    <img src={this.state.profile.imgurl}  style={{
+                    <img src={this.state.profileImgurl}  style={{
                       display: "block",
                       margin: "0 auto",
                       width: "200px",
                     }}/><br/>
-                    <strong>Address:</strong> {this.state.profile.address}<br/>
-                    <a href={"https://etherscan.io/address/" + this.state.profileAddress} target="_blank">
+                    <strong>Address:</strong> {this.props.match.params.address}<br/>
+                    <a href={"https://etherscan.io/address/" + this.props.match.params.address} target="_blank">
                       view on etherscan.io
                     </a><br/>
-                    <strong>Name:</strong> {this.state.profile.name}<br/>
-                    <strong>Contact:</strong> {this.state.profile.contact}<br/>
-                    <strong>About Me:</strong> {this.state.profile.aboutMe}<br/>
+                    <strong>Name:</strong> {this.state.profileName}<br/>
+                    <strong>Contact:</strong> {this.state.profileContact}<br/>
+                    <strong>About Me:</strong> {this.state.profileAboutMe}<br/>
                     <br/>
                     Send me ether:<br/>
                     <FormControl placeholder="amount" type="text" value={this.state.transferAmount} onChange={this.handleTransferAmountChange}/><br/>
@@ -146,7 +132,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    etherProfileInstance: state.core.etherProfileInstance,
+    // etherProfileInstance: state.core.etherProfileInstance,
   }
 }
 

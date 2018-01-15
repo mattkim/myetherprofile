@@ -32,6 +32,9 @@ contract EtherProfile {
         string
     ) {
         uint256 id = addressToProfileId[_address];
+
+        //require(id > 0);
+
         // TODO: we should be able to catch a require here.
         if (id <= 0) {
             return (

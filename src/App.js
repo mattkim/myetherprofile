@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import EtherProfileContract from '../build/contracts/EtherProfile.json'
 import getWeb3 from './utils/getWeb3'
 import { connect } from 'react-redux'
+import { Route } from 'react-router-dom'; 
 
 import {
   setAccountCreated,
@@ -11,6 +12,10 @@ import {
   updateWeb3,
 } from './actions'
 
+import Home from './Home'
+import Header from './Header'
+import Profile from './Profile'
+import Me from './Me'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -29,9 +34,13 @@ class App extends Component {
   constructor(props) {
     super(props)
 
+    console.log("***** this is app");
+    console.log(this.props);
+
     this.state = {
       storageValue: 0,
       web3: null,
+      etherProfileInstance: null,
     }
   }
 
@@ -76,6 +85,7 @@ class App extends Component {
 
     etherProfile.deployed().then((instance) => {
       this.props.updateEtherProfileInstance(instance);
+      this.setState({etherProfileInstance: instance});
 
       instance.getProfile(currentAddress).then((res, err) => {
         // Profile did not exist
@@ -101,6 +111,10 @@ class App extends Component {
           this.props.setAccountCreated(false);
         }
       });
+
+      // TODO: try to get current address of profile here.
+      console.log("****** after ethprofile deployed");
+      console.log(this.props);
     });
 
     this.props.setAccountCreated(false);
@@ -109,6 +123,21 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Header/>
+        <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
+        <Route path="/me" render={(props) => (<Me {...props}/>)}/>
+        <Route path="/profile/:address" render={(props) => {
+          if (this.state.etherProfileInstance) {
+            return (
+              <Profile
+                etherProfileInstance={this.state.etherProfileInstance}
+                {...props}
+              />
+            )
+          } else {
+            return (<Profile {...props}/>);
+          }
+        }}/>
       </div>
     );
   }
