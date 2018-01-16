@@ -66,7 +66,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header/>
+        <Header {...this.props}/>
         <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
         <Route path="/me" render={(props) => (<Me {...props}/>)}/>
         <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>

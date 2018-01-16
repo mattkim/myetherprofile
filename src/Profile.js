@@ -33,7 +33,7 @@ class Profile extends Component {
         message: "",
         profileName: "",
         profileImgurl: "",
-        profileContact: "",
+        profileEmail: "",
         profileAboutMe: "",
     }
   }
@@ -61,7 +61,7 @@ class Profile extends Component {
       this.setState({
         profileName: res.name || "Anonymous",
         profileImgurl: res.imgurl || "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
-        profileContact: res.contact || "No contact",
+        profileEmail: res.email || "No email",
         profileAboutMe: res.aboutMe || "No description",
       });
     } else {
@@ -74,7 +74,7 @@ class Profile extends Component {
       profileImgurl: "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
       profileName: "Anonymous",
       profileAboutMe: "No description",
-      profileContact: "No contact",
+      profileEmail: "No email",
     });
   }
 
@@ -111,7 +111,7 @@ class Profile extends Component {
                       view on etherscan.io
                     </a><br/>
                     <strong>Name:</strong> {this.state.profileName}<br/>
-                    <strong>Contact:</strong> {this.state.profileContact}<br/>
+                    <strong>Email:</strong> {this.state.profileEmail}<br/>
                     <strong>About Me:</strong> {this.state.profileAboutMe}<br/>
                     <br/>
                     Send me ether:<br/>

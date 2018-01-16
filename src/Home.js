@@ -21,7 +21,7 @@ import {
 
 class Home extends Component {
   static propTypes = {
-    accountCreated: React.PropTypes.bool,
+    currentAddress: React.PropTypes.string,
   };
 
   constructor(props) {
@@ -42,15 +42,14 @@ class Home extends Component {
                 <Col xs={3} sm={3} md={4}/>
                 <Col xs={6} sm={6} md={4}>
                     <h4>Your profile for block chains.</h4>
-                    {
-                      this.props.accountCreated ?
-                      <Link to="/me">
-                        <Button bsStyle="info">Edit Profile</Button>
-                      </Link> : 
-                      <Link to="/me">
-                        <Button bsStyle="success">Create Profile</Button>
-                      </Link>
-                    }
+                    <Link to="/me" style={{
+                      marginRight: "10px",
+                    }}>
+                      <Button bsStyle="info">Update Profile</Button>
+                    </Link>
+                    <Link to={`/profile/${this.props.currentAddress}`}>
+                      <Button bsStyle="success">View Profile</Button>
+                    </Link>
                 </Col>
                 <Col xs={3} sm={3} md={4}/>
             </Row>
@@ -66,7 +65,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
-    accountCreated: state.core.accountCreated,
+    currentAddress: state.core.currentAddress,
   }
 }
 

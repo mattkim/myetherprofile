@@ -34,12 +34,27 @@ class Header extends Component {
     this.state = {
       search: "",
     }
+
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleGo = this.handleGo.bind(this);
   }
 
   handleSearchChange(e) {
     this.setState({
       search: e.target.value,
     })
+  }
+
+  handleGo(e) {
+    if (this.state.search) {
+      window.location.href = `/profile/${this.state.search}`;
+      // this.props.history.push(`/profile/${this.state.search}`);
+
+      // reset
+      this.setState({
+        search: "",
+      });
+    }
   }
   
   render() {
@@ -67,7 +82,7 @@ class Header extends Component {
               }}>
                 <FormControl placeholder="Search by address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
                 <InputGroup.Button>
-                  <Button>Go</Button>
+                  <Button onClick={this.handleGo}>Go</Button>
                 </InputGroup.Button>
               </InputGroup>
             </Col>
