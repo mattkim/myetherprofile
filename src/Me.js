@@ -2,7 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
 
-import {getEtherProfile, updateEtherProfile} from './utils/contracts';
+import {
+  getEtherProfile,
+  updateEtherProfile,
+  updateEtherProfileName,
+  updateEtherProfileEmail,
+  updateEtherProfileImgurl,
+  updateEtherProfileAboutMe,
+} from './utils/contracts';
 
 import {
   setAccountCreated,
@@ -43,7 +50,7 @@ class Me extends Component {
         transferAmount: 0,
         message: "",
         messages: "",
-        defaultImgurl: "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
+        defaultImgurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJZ_9QIiGlKYzIwvT7AwYsFRIUASPFJC4Zo61i905TEjvxUS6hGQ",
         name: "",
         aboutMe: "",
         email: "",
@@ -79,18 +86,30 @@ class Me extends Component {
     const email = this.state.email || this.props.user.email || "";
     const aboutMe = this.state.aboutMe || this.props.user.aboutMe || "";
     
-    const res = await updateEtherProfile(
-      this.props.currentAddress,
-      name,
-      imgurl,
-      email,
-      aboutMe,
-    );
+    let res = await this.handleSingleSubmit();
     
-    if(res) {
-      this.props.setUser(res);
+    // If we did not handle single submit reset the whole thing.
+    if(!res) {
+      res = await updateEtherProfile(
+        this.props.currentAddress,
+        name,
+        imgurl,
+        email,
+        aboutMe,
+      );
     }
 
+    // If we did the single or batch reset user.
+    if(res) {
+      this.props.setUser({
+        name,
+        aboutMe,
+        email,
+        imgurl,
+      });
+    }
+    
+    // TODO: set a status.
     // Reset state
     this.setState({
       name: "",
@@ -99,6 +118,37 @@ class Me extends Component {
       imgurl: "",
     })
   }
+
+  async handleSingleSubmit(e) {
+    let res = "";
+
+    if (this.checkOne(this.state.name)) {
+      res = await updateEtherProfileName(this.props.currentAddress, this.state.name);
+    } else if (this.checkOne(this.state.imgurl)) {
+      res = await updateEtherProfileImgurl(this.props.currentAddress, this.state.imgurl);
+    } else if (this.checkOne(this.state.email)) {
+      res = await updateEtherProfileEmail(this.props.currentAddress, this.state.email);
+    } else if (this.checkOne(this.state.aboutMe)) {
+      res = await updateEtherProfileAboutMe(this.props.currentAddress, this.state.aboutMe);
+    }
+
+    return res;
+  }
+
+  checkOne(attr) {
+    let exists = [];
+
+    ["name", "imgurl", "email", "aboutMe"].forEach(key => {
+      const val = this.state[key];
+      if (val) {
+        exists.push(val);
+      }
+    });
+
+    return exists.length == 1 && exists[0] == attr;
+  }
+
+  // TODO: add link to current contract addresses.
   
   render() {
     return (

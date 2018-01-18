@@ -2,7 +2,7 @@ import EtherProfileContract from '../../build/contracts/EtherProfile.json'
 import EtherProfileVersionsContract from '../../build/contracts/EtherProfileVersions.json'
 import getWeb3 from './getWeb3'
 
-const LATEST_PROFILE_VERSION = 1;
+const LATEST_PROFILE_VERSION = 0;
 
 export function simple(address) {
     console.log("**** simple");
@@ -80,7 +80,12 @@ export async function getEtherProfile(address, instance) {
             }
         }
 
-        return JSON.parse(res);
+        return {
+            name: res[0],
+            imgurl: res[1],
+            email: res[2],
+            aboutMe: res[3],
+        };
     } catch (err) {
         console.log(err);
     }
@@ -88,6 +93,7 @@ export async function getEtherProfile(address, instance) {
     return null;
 }
 
+// TODO: look into limiting cost of updates
 export async function updateEtherProfile(
     fromAddress,
     name,
@@ -98,34 +104,118 @@ export async function updateEtherProfile(
     try {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
-        const versions = await getEtherProfileVersionsInstance(web3);
-        const version = await versions.getProfileVersion(fromAddress);
-
-        if (version.toNumber() < LATEST_PROFILE_VERSION) {
-            await versions.updateProfileVersion(
-                fromAddress,
-                LATEST_PROFILE_VERSION,
-                {
-                    from: fromAddress
-                }
-            );
-        }
         
-        const profile = {
+        // TODO: instead ask users to upgrade to next version, and show contract.
+        // const versions = await getEtherProfileVersionsInstance(web3);
+        // const version = await versions.getProfileVersion(fromAddress);
+        // if (version.toNumber() < LATEST_PROFILE_VERSION) {
+        //     console.log("***** updateEtherProfile");
+        //     console.log(version.toNumber());
+        //     await versions.updateProfileVersion(
+        //         fromAddress,
+        //         LATEST_PROFILE_VERSION,
+        //         {
+        //             from: fromAddress
+        //         }
+        //     );
+        // }
+
+        await instance.updateProfile(
             name,
             imgurl,
             email,
             aboutMe,
-        };
-
-        await instance.updateProfile(
-            JSON.stringify(profile),
             {
                 from: fromAddress,
             }
         );
 
-        return profile;
+        return {
+            name,
+            imgurl,
+            email,
+            aboutMe,
+        };
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function updateEtherProfileName(fromAddress, name) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+
+        await instance.updateProfileName(
+            name,
+            {
+                from: fromAddress,
+            }
+        );
+
+        return name;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function updateEtherProfileImgurl(fromAddress, imgurl) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+
+        await instance.updateProfileImgurl(
+            imgurl,
+            {
+                from: fromAddress,
+            }
+        );
+
+        return imgurl;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function updateEtherProfileEmail(fromAddress, email) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+
+        await instance.updateProfileEmail(
+            email,
+            {
+                from: fromAddress,
+            }
+        );
+
+        return email;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function updateEtherProfileAboutMe(fromAddress, aboutMe) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+
+        await instance.updateProfileAboutMe(
+            aboutMe,
+            {
+                from: fromAddress,
+            }
+        );
+
+        return aboutMe;
     } catch(err) {
         console.log(err);
     }

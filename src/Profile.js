@@ -60,7 +60,7 @@ class Profile extends Component {
     if(res) {
       this.setState({
         profileName: res.name || "Anonymous",
-        profileImgurl: res.imgurl || "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
+        profileImgurl: res.imgurl || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJZ_9QIiGlKYzIwvT7AwYsFRIUASPFJC4Zo61i905TEjvxUS6hGQ",
         profileEmail: res.email || "No email",
         profileAboutMe: res.aboutMe || "No description",
       });
@@ -71,7 +71,7 @@ class Profile extends Component {
 
   setDefaultProfile(address) {
     this.setState({
-      profileImgurl: "https://scontent-lax3-1.xx.fbcdn.net/v/t34.0-12/26803860_10155830078326488_1031614034_n.jpg?oh=8f1cc6262a9ecd0752e31142c6f15e7f&oe=5A5CEF3A",
+      profileImgurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJZ_9QIiGlKYzIwvT7AwYsFRIUASPFJC4Zo61i905TEjvxUS6hGQ",
       profileName: "Anonymous",
       profileAboutMe: "No description",
       profileEmail: "No email",
@@ -117,10 +117,6 @@ class Profile extends Component {
                     Send me ether:<br/>
                     <FormControl placeholder="amount" type="text" value={this.state.transferAmount} onChange={this.handleTransferAmountChange}/><br/>
                     <Button onClick={this.handleTransferOnClick}>Transfer</Button> <br/>
-                    <br/>
-                    Direct Message:<br/>
-                    <FormControl placeholder="message" componentClass="textarea" value={this.state.message} onChange={this.handleMessageChange}/><br/>
-                    <Button onClick={this.handleMessageSendOnClick}>Send</Button>
                 </Col>
                 <Col xs={3} sm={3} md={4}/>
             </Row>
