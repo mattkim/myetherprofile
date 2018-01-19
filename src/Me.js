@@ -253,7 +253,7 @@ class Me extends Component {
                       <br/>
                       <li><h4>Are transaction costs too expensive?</h4> Possibly.  When proof of stake comes out it may be cheaper.  It is cheaper if you only update one field, and the email field provides most value.</li>
                       <br/>
-                      <li><h4>How do I use this?</h4> Right now you need to install the <a href="https://metamask.io">Meta Mask</a> plugin.  We will support other methods in the future.</li>
+                      <li><h4>Why is my address not found?</h4> Right now you need to install the <a href="https://metamask.io">Meta Mask</a> plugin.  We will support other methods in the future.</li>
                     </ul>
                   </div>
                 </Col>
