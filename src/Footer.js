@@ -74,13 +74,27 @@ class Footer extends Component {
           margin: "0px",
         }}>
           <Row style={{
-            textAlign: "center",
             margin: "0",
           }}>
-            MyEtherProfile © 2018<br/>
-            Donations:0x71c7656ec7ab88b098defb751b7401b5f6d8976f<br/>
-            Contact Us: info@myetherprofile.com<br/>
-            Github: https://github.com/mattkim/myetherprofile<br/>
+            <Col md={4}>
+              MyEtherProfile © 2018<br/>
+            </Col>
+            <Col md={4}>
+              Eth Donations: <a style={{
+                color: "#7fe5ff",
+              }}
+              href="https://etherscan.io/address/0x8fb59a12856da9318da1c1131b50f6404d17480d" target="_blank">
+                0x8fb59a12856da9318da1c1131b50f6404d17480d
+              </a>
+            </Col>
+            <Col md={4}>
+              Contact Us: <a style={{
+                color: "#7fe5ff",
+              }} href="mailto:info@myetherprofile.com">info@myetherprofile.com</a><br/>
+              Github: <a style={{
+                color: "#7fe5ff",
+              }} href="https://github.com/mattkim/myetherprofile" target="_blank">https://github.com/mattkim/myetherprofile</a><br/>
+            </Col>
           </Row>
         </Grid>
       </div>
