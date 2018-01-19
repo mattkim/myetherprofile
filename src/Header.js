@@ -109,7 +109,7 @@ class Header extends Component {
               <b>Your address: </b> 
               {
                 this.props.currentAddress ? 
-                  <Link to={`profile/${this.props.currentAddress}`}>
+                  <Link to={`/profile/${this.props.currentAddress}`}>
                     {this.props.currentAddress}
                   </Link>
                 : "address not found"

@@ -94,29 +94,47 @@ class Profile extends Component {
     <div>
         <Grid style={{
           margin: "0px",
-          padding: "10px",
+          padding: "50px",
           paddingBottom: "100px",
-          "margin-top": "50px",
+          fontFamily: "Arial, Helvetica, sans-serif",
+          background: "#f7f7f7",
         }}>
             <Row className="show-grid">
                 <Col xs={3} sm={3} md={4}/>
                 <Col xs={6} sm={6} md={4}>
+                  <div style={{
+                    padding: "20px",
+                    marginBottom: "20px",
+                    background: "#ffffff",
+                    boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                  }}>
                     <img src={this.state.profileImgurl}  style={{
                       display: "block",
                       margin: "0 auto",
                       width: "200px",
-                    }}/><br/>
+                    }}/>
+                    <hr/>
                     <strong>Address:</strong> {this.props.match.params.address}<br/>
                     <a href={"https://etherscan.io/address/" + this.props.match.params.address} target="_blank">
-                      view on etherscan.io
-                    </a><br/>
+                      View on etherscan.io
+                    </a>
+                    <br/><br/>
                     <strong>Name:</strong> {this.state.profileName}<br/>
                     <strong>Email:</strong> {this.state.profileEmail}<br/>
                     <strong>About Me:</strong> {this.state.profileAboutMe}<br/>
-                    <br/>
-                    Send me ether:<br/>
+                    <hr/>
+                    <b>Send me ether:</b><br/>
+                    <i>(This will not use the profile contract, meaning no extra fees.)</i>
                     <FormControl placeholder="amount" type="text" value={this.state.transferAmount} onChange={this.handleTransferAmountChange}/><br/>
-                    <Button onClick={this.handleTransferOnClick}>Transfer</Button> <br/>
+                    <Button  style={{
+                      background: "#3498db",
+                      color: "white",
+                      borderRadius: "0px",
+                      display: "block",
+                      margin: "0 auto",
+                      width: "75%",
+                    }}onClick={this.handleTransferOnClick}>Transfer</Button> <br/>
+                  </div>
                 </Col>
                 <Col xs={3} sm={3} md={4}/>
             </Row>
