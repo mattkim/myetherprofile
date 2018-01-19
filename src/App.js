@@ -4,13 +4,19 @@ import getWeb3 from './utils/getWeb3'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'; 
 
-import {getWeb3js, getEtherContractInstance, getEtherProfile} from './utils/contracts';
+import {
+  getNetworkId,
+  getWeb3js,
+  getEtherContractInstance,
+  getEtherProfile
+} from './utils/contracts';
 
 import {
   setAccountCreated,
   setUser,
   updateCurrentAddress,
   updateEtherProfileInstance,
+  updateNetworkId,
   updateWeb3,
 } from './actions'
 
@@ -18,6 +24,7 @@ import Home from './Home'
 import Header from './Header'
 import Profile from './Profile'
 import Me from './Me'
+import Footer from './Footer'
 
 import './css/oswald.css'
 import './css/open-sans.css'
@@ -28,6 +35,7 @@ class App extends Component {
   static propTypes = {
     updateCurrentAddress: React.PropTypes.func,
     updateEtherProfileInstance: React.PropTypes.func,
+    updateNetworkId: React.PropTypes.func,
     updateWeb3: React.PropTypes.func,
     setAccountCreated: React.PropTypes.func,
     setUser: React.PropTypes.func,
@@ -51,6 +59,9 @@ class App extends Component {
      * state management library, but for convenience I've placed them here.
      */
     const web3 = await getWeb3js();
+    const networkId = await getNetworkId(web3);
+    this.props.updateNetworkId(networkId);
+
     let currentAddress;
 
     web3.eth.getAccounts((error, accounts) => {
@@ -65,11 +76,14 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Header {...this.props}/>
-        <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
-        <Route path="/me" render={(props) => (<Me {...props}/>)}/>
-        <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>
+      <div style={{background: "#102138", height:"100vh"}}>
+        <div style={{background: "white"}}>
+          <Header {...this.props}/>
+          <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
+          <Route path="/me" render={(props) => (<Me {...props}/>)}/>
+          <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>
+        </div>
+        <Footer {...this.props}/>
       </div>
     );
   }
@@ -82,6 +96,9 @@ const mapDispatchToProps = dispatch => {
     },
     updateEtherProfileInstance: address => {
       dispatch(updateEtherProfileInstance(address))
+    },
+    updateNetworkId: networkId => {
+      dispatch(updateNetworkId(networkId))
     },
     updateWeb3: web3 => {
       dispatch(updateWeb3(web3))

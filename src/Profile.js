@@ -95,8 +95,8 @@ class Profile extends Component {
         <Grid style={{
           margin: "0px",
           padding: "10px",
+          paddingBottom: "100px",
           "margin-top": "50px",
-          "margin-bottom": "20px",
         }}>
             <Row className="show-grid">
                 <Col xs={3} sm={3} md={4}/>

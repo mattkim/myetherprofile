@@ -6,6 +6,7 @@ import {
     UPDATE_CURRENT_ADDRESS,
     UPDATE_WEB3,
     UPDATE_ETHER_PROFILE_INSTANCE,
+    UPDATE_NETWORK_ID,
   } from './actions'
 
 function user(state = {}, action) {
@@ -40,6 +41,11 @@ function core(state = {}, action) {
       return {
         ...state,
         etherProfileInstance: action.instance,
+      };
+    case UPDATE_NETWORK_ID:
+      return {
+        ...state,
+        networkId: action.networkId,
       };
     default:
       return state

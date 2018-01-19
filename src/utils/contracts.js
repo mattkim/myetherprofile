@@ -4,20 +4,47 @@ import getWeb3 from './getWeb3'
 
 const LATEST_PROFILE_VERSION = 0;
 
-export function simple(address) {
-    console.log("**** simple");
-    console.log(address);
-    getWeb3.then(results => {
-        console.log("**** simple web3");
-        console.log(results);
-        console.log(results.web3);
-    });
-}
+// 0: Olympic
+// 1: Frontier, Homestead, Metropolis, the Ethereum public main network
+// 1: Classic, the (un)forked public Ethereum Classic main network, chain ID 61
+// 1: Expanse, an alternative Ethereum implementation, chain ID 2
+// 2: Morden, the public Ethereum testnet, now Ethereum Classic testnet
+// 3: Ropsten, the public cross-client Ethereum testnet
+// 4: Rinkeby, the public Geth PoA testnet
+// 42: Kovan, the public Parity PoA testnet
+// 77: Sokol, the public Oracles PoA testnet
+// 99: Core, the public Oracles PoA main network
+// 7762959: Musicoin, the music blockchain
+export const NETWORK_IDS = {
+    0: "Olympic",
+    1: "Main Ethereum Network",
+    2: "Morden Test Network",
+    3: "Ropsten Test Network",
+    4: "Rinkeby Test Network",
+    42: "Kovan Test Network",
+    77: "Sokol Test Oracle Network",
+    99: "Core Main Oracle Network",
+    7762959: "Musicoin Main Network",
+};
 
 export async function getWeb3js() {
     try {
         const results = await getWeb3;
         return results.web3;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function getNetworkId(web3) {
+    try{
+        if(!web3) {
+            web3 = await getWeb3js();
+        }
+
+        return web3.version.network;
     } catch(err) {
         console.log(err);
     }

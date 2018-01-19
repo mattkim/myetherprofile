@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
 
 import {
+  getEtherContractInstance,
   getEtherProfile,
   updateEtherProfile,
   updateEtherProfileName,
@@ -47,14 +48,15 @@ class Me extends Component {
     super(props)
 
     this.state = {
-        transferAmount: 0,
-        message: "",
-        messages: "",
-        defaultImgurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJZ_9QIiGlKYzIwvT7AwYsFRIUASPFJC4Zo61i905TEjvxUS6hGQ",
-        name: "",
-        aboutMe: "",
-        email: "",
-        imgurl: "",
+      contractAddress: "",
+      transferAmount: 0,
+      message: "",
+      messages: "",
+      defaultImgurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJZ_9QIiGlKYzIwvT7AwYsFRIUASPFJC4Zo61i905TEjvxUS6hGQ",
+      name: "",
+      aboutMe: "",
+      email: "",
+      imgurl: "",
     }
 
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -62,6 +64,12 @@ class Me extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleImgUrlChange = this.handleImgUrlChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async componentWillMount() {
+    // set contract address here.
+    const instance = await getEtherContractInstance();
+    this.setState({contractAddress: instance.address});
   }
 
   handleNameChange(e) {
@@ -149,7 +157,7 @@ class Me extends Component {
   }
 
   // TODO: add link to current contract addresses.
-  
+  // TODO: stop double submits
   render() {
     return (
     <div>
@@ -157,7 +165,7 @@ class Me extends Component {
           margin: "0px",
           padding: "10px",
           "margin-top": "50px",
-          "margin-bottom": "20px",
+          paddingBottom: "100px",
         }}>
             <Row className="show-grid">
                 <Col xs={3} sm={3} md={4}/>
@@ -169,7 +177,8 @@ class Me extends Component {
                     }}/>
                     <br/>
                     Address: {this.props.currentAddress}<br/>
-                    <Link to={"/profile/" + this.props.currentAddress}>View public profile</Link><br/>
+                    <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/>
+                    <a href={`https://etherscan.io/address/${this.state.contractAddress}#code`} target="_blank">View profile contract version 0 on etherscan.io</a><br/>
                     <br/>
                     Image URL: {this.props.user.imgurl || "No image"}<br/>
                     <FormControl placeholder="Image URL" type="text" value={this.state.imgurl} onChange={this.handleImgUrlChange}/><br/>

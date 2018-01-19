@@ -7,7 +7,7 @@ export const SET_USER = 'SET_USER'
 export const UPDATE_CURRENT_ADDRESS = 'UPDATE_CURRENT_ADDRESS'
 export const UPDATE_WEB3 = 'UPDATE_WEB3'
 export const UPDATE_ETHER_PROFILE_INSTANCE = 'UPDATE_ETHER_PROFILE_INSTANCE'
-
+export const UPDATE_NETWORK_ID = 'UPDATE_NETWORK_ID'
 /*
  * action creators
  */
@@ -30,4 +30,8 @@ export function updateWeb3(web3) {
 
 export function updateEtherProfileInstance(instance) {
     return {type: UPDATE_ETHER_PROFILE_INSTANCE, instance};
+}
+
+export function updateNetworkId(networkId) {
+    return {type: UPDATE_NETWORK_ID, networkId};
 }

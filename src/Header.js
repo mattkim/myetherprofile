@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
+import {NETWORK_IDS} from './utils/contracts';
 
 import {
 	Grid,
@@ -26,6 +27,7 @@ import {
 class Header extends Component {
   static propTypes = {
     currentAddress: React.PropTypes.string,
+    networkId: React.PropTypes.string,
   };
 
   constructor(props) {
@@ -56,7 +58,10 @@ class Header extends Component {
       });
     }
   }
-  
+
+  // TODO: implement enter button for search bar.
+  // TODO: add network name to props
+
   render() {
     return (
       <div style={{
@@ -71,6 +76,7 @@ class Header extends Component {
               <Link to="/" style={{
                 "font-family": "'Oswald', 'Arial Narrow', sans-serif",
                 "font-size": "2em",
+                textDecoration: "none",
               }}>
                 MyEtherProfile
               </Link> 
@@ -89,9 +95,23 @@ class Header extends Component {
           </Row>
           <Row style={{
             margin: "0px",
-            "text-align": "right",
+            textAlign: "right",
           }}>
-            Your address: {this.props.currentAddress || "address not found"}
+              Your address: {this.props.currentAddress || "address not found"} | Network: { NETWORK_IDS[this.props.networkId] || 'localhost'}
+          </Row>
+          <Row style={{
+            margin: "5px",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }}>
+            <Link to="/me" style={{
+              marginRight: "10px",
+              marginLeft: "10px"
+            }}>Update Profile</Link>|
+            <Link to={`/profile/${this.props.currentAddress}`} style={{
+              marginRight: "10px",
+              marginLeft: "10px",
+            }}>View Profile</Link>
           </Row>
         </Grid>
       </div>
@@ -106,6 +126,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     currentAddress: state.core.currentAddress,
+    networkId: state.core.networkId,
   }
 }
 
