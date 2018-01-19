@@ -10,6 +10,9 @@ module.exports = {
     const staticPath = express.static(path.join(__dirname, 'build_webpack', 'static'))
     const fontsPath = express.static(path.join(__dirname, 'build_webpack', 'fonts'))
     
+    // TODO: support /profile
+    // TODO: deploy to rinkeby and then prod
+    // TODO: and then show status update after.
     app.use('/static', staticPath)
     app.use('/fonts', fontsPath)
     app.get('/', function (_, res) { res.sendFile(indexPath) })
