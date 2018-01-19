@@ -89,7 +89,7 @@ class Header extends Component {
                 <FormControl style={{
                   borderRadius: "0px",
                 }}
-                placeholder="Search by address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
+                placeholder="Lookup Profile by Address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
                 <InputGroup.Button>
                   <Button onClick={this.handleGo} style={{
                     background: "#3498db",
@@ -106,7 +106,15 @@ class Header extends Component {
             fontFamily: "Arial, Helvetica, sans-serif",
             color: "#666666",
           }}>
-              <b>Your address:</b> {this.props.currentAddress || "address not found"}
+              <b>Your address: </b> 
+              {
+                this.props.currentAddress ? 
+                  <a href={`profile/${this.props.currentAddress}`} target="_blank">
+                    {this.props.currentAddress}
+                  </a>
+                : "address not found"
+              }
+              
               <span style={{ opacity: "0.1" }}> | </span>
               <b>Network:</b> { NETWORK_IDS[this.props.networkId] || 'localhost'}
           </Row>

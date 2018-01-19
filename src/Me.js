@@ -187,7 +187,9 @@ class Me extends Component {
                     }}/>
                     <br/>
                     <b>Your Address:</b> {this.props.currentAddress}<br/>
-                    <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/><br/>
+                    <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/>
+                    <a href={`https://etherscan.io/address/${this.props.currentAddress}`} target="_blank">View on etherscan.io</a><br/>
+                    <br/>
                     <b>Profile Contract Address:</b> {this.state.contractAddress}<br/>
                     <a href={`https://etherscan.io/address/${this.state.contractAddress}#code`} target="_blank">View on etherscan.io</a><br/>
                     <br/>
@@ -231,7 +233,7 @@ class Me extends Component {
                       borderWidth:"2px",
                     }}/>
                     <ul>
-                      <li><b>1/18/2018</b> - Welcome to the initial launch of MyEtherProfile.  The features at the moment are very basic.  Give us feedback at <a href="mailto:info@myetherprofile.com">info@myetherprofile.com</a></li>
+                      <li><b>1/18/2018</b> - Welcome to the initial launch of MyEtherProfile.  The features at the moment are limited to updating your public profile using Ethereum smart contracts, and viewing profiles on the blockchain.  Give us feedback at <a href="mailto:info@myetherprofile.com">info@myetherprofile.com</a></li>
                     </ul>
                   </div>
                   <hr/>
@@ -250,7 +252,8 @@ class Me extends Component {
                       <li><h4>Why update profile contract with my info?</h4> You want to give people with your address a way to contact you.  You want to share your address and a bit of your public information guaranteed to be uploaded by that address.</li>
                       <br/>
                       <li><h4>Are transaction costs too expensive?</h4> Possibly.  When proof of stake comes out it may be cheaper.  It is cheaper if you only update one field, and the email field provides most value.</li>
-                      
+                      <br/>
+                      <li><h4>How do I use this?</h4> Right now you need to install the <a href="https://metamask.io">Meta Mask</a> plugin.  We will support other methods in the future.</li>
                     </ul>
                   </div>
                 </Col>
