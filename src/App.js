@@ -79,8 +79,7 @@ class App extends Component {
       <div style={{background: "#102138", height:"100vh"}}>
         <div style={{background: "white"}}>
           <Header {...this.props}/>
-          <Route exact path="/" render={(props) => (<Home {...props}/>)}/>
-          <Route path="/me" render={(props) => (<Me {...props}/>)}/>
+          <Route path="/" render={(props) => (<Me {...props}/>)}/>
           <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>
         </div>
         <Footer {...this.props}/>

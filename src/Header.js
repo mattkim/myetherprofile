@@ -65,17 +65,17 @@ class Header extends Component {
   render() {
     return (
       <div style={{
-        "border-bottom": "solid 2px #eee",
+        borderBottom: "solid 2px #eee",
       }}>
         <Grid style={{
           margin: "0px",
-          padding: "10px",
+          padding: "20px",
         }}>
           <Row>
             <Col md={6}>
               <Link to="/" style={{
-                "font-family": "'Oswald', 'Arial Narrow', sans-serif",
-                "font-size": "2em",
+                fontFamily: "'Arial Black', Gadget, sans-serif",
+                fontSize: "2em",
                 textDecoration: "none",
               }}>
                 MyEtherProfile
@@ -84,11 +84,18 @@ class Header extends Component {
             <Col md={6}>
               <InputGroup className="pull-right" style={{
                 width: "350px",
-                "margin-bottom": "10px",
+                marginBottom: "10px",
               }}>
-                <FormControl placeholder="Search by address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
+                <FormControl style={{
+                  borderRadius: "0px",
+                }}
+                placeholder="Search by address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
                 <InputGroup.Button>
-                  <Button onClick={this.handleGo}>Go</Button>
+                  <Button onClick={this.handleGo} style={{
+                    background: "#3498db",
+                    color: "white",
+                    borderRadius: "0px",
+                  }}>Go</Button>
                 </InputGroup.Button>
               </InputGroup>
             </Col>
@@ -96,22 +103,12 @@ class Header extends Component {
           <Row style={{
             margin: "0px",
             textAlign: "right",
+            fontFamily: "Arial, Helvetica, sans-serif",
+            color: "#666666",
           }}>
-              Your address: {this.props.currentAddress || "address not found"} | Network: { NETWORK_IDS[this.props.networkId] || 'localhost'}
-          </Row>
-          <Row style={{
-            margin: "5px",
-            fontSize: "16px",
-            fontWeight: "bold",
-          }}>
-            <Link to="/me" style={{
-              marginRight: "10px",
-              marginLeft: "10px"
-            }}>Update Profile</Link>|
-            <Link to={`/profile/${this.props.currentAddress}`} style={{
-              marginRight: "10px",
-              marginLeft: "10px",
-            }}>View Profile</Link>
+              <b>Your address:</b> {this.props.currentAddress || "address not found"}
+              <span style={{ opacity: "0.1" }}> | </span>
+              <b>Network:</b> { NETWORK_IDS[this.props.networkId] || 'localhost'}
           </Row>
         </Grid>
       </div>

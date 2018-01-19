@@ -163,35 +163,97 @@ class Me extends Component {
     <div>
         <Grid style={{
           margin: "0px",
-          padding: "10px",
-          "margin-top": "50px",
+          padding: "50px",
           paddingBottom: "100px",
+          background: "#f7f7f7",
+          fontFamily: "Arial, Helvetica, sans-serif",
         }}>
             <Row className="show-grid">
-                <Col xs={3} sm={3} md={4}/>
-                <Col xs={6} sm={6} md={4}>
+                <Col md={9} lg={8}>
+                  <div style={{
+                    padding: "20px",
+                    marginBottom: "20px",
+                    background: "#ffffff",
+                    boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                  }}>
+                    <h1 style={{
+                      fontFamily: "\"Courier New\", Courier, monospace",
+                      textAlign: "center",
+                    }}>Update Your Profile</h1>
                     <img src={this.props.user.imgurl || this.state.defaultImgurl} style={{
                       display: "block",
                       margin: "0 auto",
                       width: "200px",
                     }}/>
                     <br/>
-                    Address: {this.props.currentAddress}<br/>
-                    <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/>
-                    <a href={`https://etherscan.io/address/${this.state.contractAddress}#code`} target="_blank">View profile contract version 0 on etherscan.io</a><br/>
+                    <b>Your Address:</b> {this.props.currentAddress}<br/>
+                    <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/><br/>
+                    <b>Profile Contract Address:</b> {this.state.contractAddress}<br/>
+                    <a href={`https://etherscan.io/address/${this.state.contractAddress}#code`} target="_blank">View on etherscan.io</a><br/>
                     <br/>
-                    Image URL: {this.props.user.imgurl || "No image"}<br/>
-                    <FormControl placeholder="Image URL" type="text" value={this.state.imgurl} onChange={this.handleImgUrlChange}/><br/>
-                    Name: {this.props.user.name || "Anonymous"}<br/>
-                    <FormControl placeholder="Name" type="text" value={this.state.name} onChange={this.handleNameChange}/><br/>
-                    Email: {this.props.user.email || "No email"}<br/>
-                    <FormControl placeholder="Email" type="text" value={this.state.email} onChange={this.handleEmailChange}/><br/>
-                    About Me: {this.props.user.aboutMe || "No about me"}<br/>
-                    <FormControl placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
+                    <b>Image URL:</b> {this.props.user.imgurl || "No image"}<br/>
+                    <FormControl  style={{
+                      borderRadius: "0px",
+                    }}placeholder="Image URL" type="text" value={this.state.imgurl} onChange={this.handleImgUrlChange}/><br/>
+                    <b>Name:</b> {this.props.user.name || "Anonymous"}<br/>
+                    <FormControl  style={{
+                      borderRadius: "0px",
+                    }}placeholder="Name" type="text" value={this.state.name} onChange={this.handleNameChange}/><br/>
+                    <b>Email:</b> {this.props.user.email || "No email"}<br/>
+                    <FormControl style={{
+                      borderRadius: "0px",
+                    }}placeholder="Email" type="text" value={this.state.email} onChange={this.handleEmailChange}/><br/>
+                    <b>About Me:</b> {this.props.user.aboutMe || "No about me"}<br/>
+                    <FormControl style={{
+                      borderRadius: "0px",
+                    }} placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
 
-                    <Button onClick={this.handleSubmit}>Submit</Button>
+                    <Button onClick={this.handleSubmit} style={{
+                      background: "#3498db",
+                      color: "white",
+                      borderRadius: "0px",
+                      display: "block",
+                      margin: "0 auto",
+                      width: "75%",
+                    }}>Commit</Button>
+                  </div>
                 </Col>
-                <Col xs={3} sm={3} md={4}/>
+                <Col md={3} lg={4}>
+                  <div style={{
+                    padding: "20px",
+                    background: "#ffffff",
+                    boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                    fontFamily: "Arial, Helvetica, sans-serif",
+                  }}>
+                    <h4>News</h4>
+                    <hr style={{
+                      borderColor:"green",
+                      borderWidth:"2px",
+                    }}/>
+                    <ul>
+                      <li><b>1/18/2018</b> - Welcome to the initial launch of MyEtherProfile.  The features at the moment are very basic.  Give us feedback at <a href="mailto:info@myetherprofile.com">info@myetherprofile.com</a></li>
+                    </ul>
+                  </div>
+                  <hr/>
+                  <div style={{
+                    padding: "20px",
+                    background: "#ffffff",
+                    boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                    fontFamily: "Arial, Helvetica, sans-serif",
+                  }}>
+                    <h4>FAQ</h4>
+                    <hr style={{
+                      borderColor:"red",
+                      borderWidth:"2px",
+                    }}/>
+                    <ul>
+                      <li><h4>Why update profile contract with my info?</h4> You want to give people with your address a way to contact you.  You want to share your address and a bit of your public information guaranteed to be uploaded by that address.</li>
+                      <br/>
+                      <li><h4>Are transaction costs too expensive?</h4> Possibly.  When proof of stake comes out it may be cheaper.  It is cheaper if you only update one field, and the email field provides most value.</li>
+                      
+                    </ul>
+                  </div>
+                </Col>
             </Row>
         </Grid>
     </div>
