@@ -89,6 +89,7 @@ class Profile extends Component {
 
   // TODO: you can see some addresses on etherscan.
   
+  // TODO: steak doesn't show up when not connected
   render() {
     return (
     <div>

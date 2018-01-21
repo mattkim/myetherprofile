@@ -158,6 +158,8 @@ class Me extends Component {
 
   // TODO: add link to current contract addresses.
   // TODO: stop double submits
+  // TOOD: add another faq for supported networks. and profile contracts
+
   render() {
     return (
     <div>
@@ -209,7 +211,16 @@ class Me extends Component {
                     <FormControl style={{
                       borderRadius: "0px",
                     }} placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
-
+                    <span style={{
+                      color: "red",
+                      fontStyle: "italic",
+                      textAlign: "center",
+                      display: "block",
+                      margin: "0 auto",
+                    }}>
+                      (Reminder that committing this transaction will cost gas!)
+                    </span>
+                    <br/>
                     <Button onClick={this.handleSubmit} style={{
                       background: "#3498db",
                       color: "white",

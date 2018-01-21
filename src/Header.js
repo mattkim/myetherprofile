@@ -39,6 +39,7 @@ class Header extends Component {
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleGo = this.handleGo.bind(this);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   handleSearchChange(e) {
@@ -59,8 +60,11 @@ class Header extends Component {
     }
   }
 
-  // TODO: implement enter button for search bar.
-  // TODO: add network name to props
+  handleFormSubmit(e) {
+    e.preventDefault();
+    e.target[0].value = ''; // eslint-disable-line no-param-reassign
+    this.handleGo(); // Probably don't need ot pass along the event.
+  }
 
   render() {
     return (
@@ -82,14 +86,12 @@ class Header extends Component {
               </Link> 
             </Col>
             <Col md={6}>
+            <Form autoComplete="off" onSubmit={this.handleFormSubmit}>
               <InputGroup className="pull-right" style={{
                 width: "350px",
                 marginBottom: "10px",
               }}>
-                <FormControl style={{
-                  borderRadius: "0px",
-                }}
-                placeholder="Lookup Profile by Address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
+                <FormControl style={{borderRadius: "0px"}} placeholder="Lookup Profile by Address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
                 <InputGroup.Button>
                   <Button onClick={this.handleGo} style={{
                     background: "#3498db",
@@ -98,6 +100,7 @@ class Header extends Component {
                   }}>Go</Button>
                 </InputGroup.Button>
               </InputGroup>
+            </Form>
             </Col>
           </Row>
           <Row style={{
