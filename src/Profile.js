@@ -79,6 +79,26 @@ class Profile extends Component {
     });
   }
 
+  // TODO: support this later.
+  renderTransfer() {
+    return (
+      <div>
+        <hr/>
+        <b>Send me ether:</b><br/>
+        <i>(This will not use the profile contract, meaning no extra fees.)</i>
+        <FormControl placeholder="amount" type="text" value={this.state.transferAmount} onChange={this.handleTransferAmountChange}/><br/>
+        <Button  style={{
+          background: "#3498db",
+          color: "white",
+          borderRadius: "0px",
+          display: "block",
+          margin: "0 auto",
+          width: "75%",
+        }}onClick={this.handleTransferOnClick}>Transfer</Button> <br/>
+      </div>
+    )
+  }
+
   // TODO: interesting part here is that you have to pay to create
   // a profile to get a dm, or else the profile won't exist to send
   // it to.
@@ -124,18 +144,6 @@ class Profile extends Component {
                     <strong>Name:</strong> {this.state.profileName}<br/>
                     <strong>Email:</strong> {this.state.profileEmail}<br/>
                     <strong>About Me:</strong> {this.state.profileAboutMe}<br/>
-                    <hr/>
-                    <b>Send me ether:</b><br/>
-                    <i>(This will not use the profile contract, meaning no extra fees.)</i>
-                    <FormControl placeholder="amount" type="text" value={this.state.transferAmount} onChange={this.handleTransferAmountChange}/><br/>
-                    <Button  style={{
-                      background: "#3498db",
-                      color: "white",
-                      borderRadius: "0px",
-                      display: "block",
-                      margin: "0 auto",
-                      width: "75%",
-                    }}onClick={this.handleTransferOnClick}>Transfer</Button> <br/>
                   </div>
                 </Col>
                 <Col xs={3} sm={3} md={4}/>
@@ -145,6 +153,8 @@ class Profile extends Component {
     );
   }
 }
+
+
 
 const mapDispatchToProps = dispatch => {
   return {}

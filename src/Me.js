@@ -126,6 +126,11 @@ class Me extends Component {
   }
 
   async getEstimate() {
+    if (!this.state.name && !this.state.imgurl && !this.state.email && !this.state.aboutMe) {
+      this.setState({gasEstimate: 0});
+      return;
+    }
+
     let res = undefined;
 
     if (this.checkOne(this.state.name)) {
@@ -151,6 +156,10 @@ class Me extends Component {
   }
 
   async handleSubmit(e) {
+    if (!this.state.name && !this.state.imgurl && !this.state.email && !this.state.aboutMe) {
+      return undefined;
+    }
+
     this.setState({
       submitStatus: (
         <div style={{
@@ -167,10 +176,6 @@ class Me extends Component {
         </div>
       ),
     });
-
-    // if (!this.state.name && !this.state.imgurl && !this.state.email && !this.state.aboutMe) {
-    //   return undefined;
-    // }
 
     const name = this.state.name || this.props.user.name || "";
     const imgurl = this.state.imgurl || this.props.user.imgurl || "";
@@ -241,6 +246,9 @@ class Me extends Component {
       email: "",
       imgurl: "",
     })
+
+    // Reset the estimate.
+    this.getEstimate();
   }
 
   async handleSingleSubmit(e) {
@@ -329,10 +337,12 @@ class Me extends Component {
                       borderRadius: "0px",
                     }} placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
                     <hr/>
-                    Gas Limit Estimate: {this.state.gasEstimate}<br/>
-                    Gas Price in Gwei: <FormControl style={{
+                    <b>Gas Limit Estimate:</b> {this.state.gasEstimate}<br/>
+                    <b>Gas Price in Gwei:</b> <i>(Lower to 1 Gwei for slower but cheaper transactions)</i> <FormControl style={{
                       borderRadius: "0px",
                     }} placeholder="Gas Price" type="text" value={this.state.gasPrice} onChange={this.handleGasPriceChange}/><br/>
+                    <b>Total Ether:</b> {(parseInt(this.state.gasEstimate) * parseInt(this.state.gasPrice)) / 1000000000}<br/>
+                    <a href="https://ethgasstation.info/" target="_blank">View ideal gas configs on ethgasstation.info</a><br/>
                     <hr/>
                     <span style={{
                       color: "red",

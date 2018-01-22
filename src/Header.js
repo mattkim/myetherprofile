@@ -124,7 +124,7 @@ class Header extends Component {
                   color: "red",
                   fontStyle: "italic",
                 }}>
-                (Currently only Rinkeby network supported)
+                (Currently only Main and Rinkeby networks supported)
                 </div>
               )}
           </Row>
