@@ -4,8 +4,14 @@ import { Link } from 'react-router-dom';
 
 import {
   ETHERSCAN_LINKS,
+  getDefaultGasPrice,
   getEtherContractInstance,
   getEtherProfile,
+  estimateUpdateEtherProfile,
+  estimateUpdateEtherProfileName,
+  estimateUpdateEtherProfileImgurl,
+  estimateUpdateEtherProfileEmail,
+  estimateUpdateEtherProfileAboutMe,
   updateEtherProfile,
   updateEtherProfileName,
   updateEtherProfileEmail,
@@ -59,6 +65,10 @@ class Me extends Component {
       aboutMe: "",
       email: "",
       imgurl: "",
+      gasEstimate: 0,
+      gasPrice: 0,
+      actualGasPrice: 0,
+      weiToGwei: 1000000000,
       submitStatus: (
         <div style={{
           color: "gray",
@@ -78,28 +88,66 @@ class Me extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleImgUrlChange = this.handleImgUrlChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleGasPriceChange = this.handleGasPriceChange.bind(this);
   }
 
   async componentWillMount() {
     // set contract address here.
     const instance = await getEtherContractInstance();
+    const gasPrice = await getDefaultGasPrice();
     this.setState({contractAddress: instance.address});
+    this.setState({gasPrice: parseInt(gasPrice) / this.state.weiToGwei});
+    this.setState({actualGasPrice: parseInt(gasPrice)});
   }
 
   handleNameChange(e) {
     this.setState({name: e.target.value});
+    this.getEstimate();
   }
 
   handleAboutMeChange(e) {
     this.setState({aboutMe: e.target.value});
+    this.getEstimate();
   }
 
   handleEmailChange(e) {
     this.setState({email: e.target.value});
+    this.getEstimate();
   }
 
   handleImgUrlChange(e) {
     this.setState({imgurl: e.target.value});
+    this.getEstimate();
+  }
+
+  handleGasPriceChange(e) {
+    this.setState({gasPrice: e.target.value});
+    this.setState({actualGasPrice: parseInt(e.target.value) * this.state.weiToGwei});
+  }
+
+  async getEstimate() {
+    let res = undefined;
+
+    if (this.checkOne(this.state.name)) {
+      res = await estimateUpdateEtherProfileName(this.state.name);
+    } else if (this.checkOne(this.state.imgurl)) {
+      res = await estimateUpdateEtherProfileImgurl(this.state.imgurl);
+    } else if (this.checkOne(this.state.email)) {
+      res = await estimateUpdateEtherProfileEmail(this.state.email);
+    } else if (this.checkOne(this.state.aboutMe)) {
+      res = await estimateUpdateEtherProfileAboutMe(this.state.aboutMe);
+    } else {
+      res = await estimateUpdateEtherProfile(
+        this.state.name,
+        this.state.imgurl,
+        this.state.email,
+        this.state.aboutMe,
+      );
+    }
+
+    if(res) {
+      this.setState({gasEstimate: res});
+    }
   }
 
   async handleSubmit(e) {
@@ -119,6 +167,11 @@ class Me extends Component {
         </div>
       ),
     });
+
+    // if (!this.state.name && !this.state.imgurl && !this.state.email && !this.state.aboutMe) {
+    //   return undefined;
+    // }
+
     const name = this.state.name || this.props.user.name || "";
     const imgurl = this.state.imgurl || this.props.user.imgurl || "";
     const email = this.state.email || this.props.user.email || "";
@@ -130,6 +183,7 @@ class Me extends Component {
     if(!res) {
       res = await updateEtherProfile(
         this.props.currentAddress,
+        this.state.actualGasPrice,
         name,
         imgurl,
         email,
@@ -193,13 +247,13 @@ class Me extends Component {
     let res = "";
 
     if (this.checkOne(this.state.name)) {
-      res = await updateEtherProfileName(this.props.currentAddress, this.state.name);
+      res = await updateEtherProfileName(this.props.currentAddress, this.state.actualGasPrice, this.state.name);
     } else if (this.checkOne(this.state.imgurl)) {
-      res = await updateEtherProfileImgurl(this.props.currentAddress, this.state.imgurl);
+      res = await updateEtherProfileImgurl(this.props.currentAddress, this.state.actualGasPrice, this.state.imgurl);
     } else if (this.checkOne(this.state.email)) {
-      res = await updateEtherProfileEmail(this.props.currentAddress, this.state.email);
+      res = await updateEtherProfileEmail(this.props.currentAddress, this.state.actualGasPrice, this.state.email);
     } else if (this.checkOne(this.state.aboutMe)) {
-      res = await updateEtherProfileAboutMe(this.props.currentAddress, this.state.aboutMe);
+      res = await updateEtherProfileAboutMe(this.props.currentAddress, this.state.actualGasPrice, this.state.aboutMe);
     }
 
     return res;
@@ -274,6 +328,12 @@ class Me extends Component {
                     <FormControl style={{
                       borderRadius: "0px",
                     }} placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
+                    <hr/>
+                    Gas Limit Estimate: {this.state.gasEstimate}<br/>
+                    Gas Price in Gwei: <FormControl style={{
+                      borderRadius: "0px",
+                    }} placeholder="Gas Price" type="text" value={this.state.gasPrice} onChange={this.handleGasPriceChange}/><br/>
+                    <hr/>
                     <span style={{
                       color: "red",
                       fontStyle: "italic",

@@ -1,5 +1,7 @@
 import EtherProfileContract from '../../build/contracts/EtherProfile.json'
 import EtherProfileVersionsContract from '../../build/contracts/EtherProfileVersions.json'
+import MigrationsContract from '../../build/contracts/Migrations.json'
+
 import getWeb3 from './getWeb3'
 
 const LATEST_PROFILE_VERSION = 0;
@@ -35,6 +37,28 @@ export async function getWeb3js() {
     try {
         const results = await getWeb3;
         return results.web3;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function getDefaultGasPrice(web3) {
+    try{
+        if(!web3) {
+            web3 = await getWeb3js();
+        }
+
+        const res = await (() => {
+            return new Promise(resolve => {
+                web3.eth.getGasPrice((err, res) => {
+                    resolve(res.toNumber());
+                });
+            });
+        })();
+
+        return res;
     } catch(err) {
         console.log(err);
     }
@@ -92,6 +116,41 @@ export async function getEtherContractInstance(web3) {
     return null;
 }
 
+export async function getMigrations(web3) {
+    try{
+        if (!web3) {
+            web3 = await getWeb3js();
+        }
+
+        const contract = require('truffle-contract')
+        const migrations = contract(MigrationsContract)
+        migrations.setProvider(web3.currentProvider)
+        return migrations
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function getMigrationsInstance(web3) {
+    try{
+        if (!web3) {
+            web3 = await getWeb3js();
+        }
+
+        const contract = require('truffle-contract')
+        const migrations = contract(MigrationsContract)
+        migrations.setProvider(web3.currentProvider)
+        const instance = await migrations.deployed();
+        return instance;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
 export async function getEtherProfile(address, instance) {
     try{
         if(!instance) {
@@ -127,6 +186,7 @@ export async function getEtherProfile(address, instance) {
 // TODO: look into limiting cost of updates
 export async function updateEtherProfile(
     fromAddress,
+    gasPrice,
     name,
     imgurl,
     email,
@@ -158,6 +218,7 @@ export async function updateEtherProfile(
             aboutMe,
             {
                 from: fromAddress,
+                gasPrice,
             }
         );
 
@@ -169,7 +230,7 @@ export async function updateEtherProfile(
     return null;
 }
 
-export async function updateEtherProfileName(fromAddress, name) {
+export async function updateEtherProfileName(fromAddress, gasPrice, name) {
     try {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
@@ -178,6 +239,7 @@ export async function updateEtherProfileName(fromAddress, name) {
             name,
             {
                 from: fromAddress,
+                gasPrice,
             }
         );
 
@@ -189,7 +251,7 @@ export async function updateEtherProfileName(fromAddress, name) {
     return null;
 }
 
-export async function updateEtherProfileImgurl(fromAddress, imgurl) {
+export async function updateEtherProfileImgurl(fromAddress, gasPrice, imgurl) {
     try {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
@@ -198,6 +260,7 @@ export async function updateEtherProfileImgurl(fromAddress, imgurl) {
             imgurl,
             {
                 from: fromAddress,
+                gasPrice,
             }
         );
 
@@ -209,7 +272,7 @@ export async function updateEtherProfileImgurl(fromAddress, imgurl) {
     return null;
 }
 
-export async function updateEtherProfileEmail(fromAddress, email) {
+export async function updateEtherProfileEmail(fromAddress, gasPrice, email) {
     try {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
@@ -218,6 +281,7 @@ export async function updateEtherProfileEmail(fromAddress, email) {
             email,
             {
                 from: fromAddress,
+                gasPrice,
             }
         );
 
@@ -229,7 +293,7 @@ export async function updateEtherProfileEmail(fromAddress, email) {
     return null;
 }
 
-export async function updateEtherProfileAboutMe(fromAddress, aboutMe) {
+export async function updateEtherProfileAboutMe(fromAddress, gasPrice, aboutMe) {
     try {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
@@ -238,10 +302,83 @@ export async function updateEtherProfileAboutMe(fromAddress, aboutMe) {
             aboutMe,
             {
                 from: fromAddress,
+                gasPrice,
             }
         );
 
         return res;
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+// Estimates
+
+export async function estimateUpdateEtherProfile(
+    name,
+    imgurl,
+    email,
+    aboutMe
+) {
+    try{
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+        return instance.updateProfile.estimateGas(
+            name,
+            imgurl,
+            email,
+            aboutMe,
+        );
+    } catch (err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function estimateUpdateEtherProfileName(name) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+        return instance.updateProfileName.estimateGas(name);
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function estimateUpdateEtherProfileImgurl(imgurl) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+        return instance.updateProfileImgurl.estimateGas(imgurl);
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function estimateUpdateEtherProfileEmail(email) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+        return instance.updateProfileEmail.estimateGas(email);
+    } catch(err) {
+        console.log(err);
+    }
+
+    return null;
+}
+
+export async function estimateUpdateEtherProfileAboutMe(aboutMe) {
+    try {
+        const web3 = await getWeb3js();
+        const instance = await getEtherContractInstance(web3);
+        return instance.updateProfileAboutMe.estimateGas(aboutMe);
     } catch(err) {
         console.log(err);
     }

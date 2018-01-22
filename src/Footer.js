@@ -83,8 +83,8 @@ class Footer extends Component {
               Eth Donations: <a style={{
                 color: "#7fe5ff",
               }}
-              href="https://etherscan.io/address/0x8fb59a12856da9318da1c1131b50f6404d17480d" target="_blank">
-                0x8fb59a12856da9318da1c1131b50f6404d17480d
+              href="https://etherscan.io/address/0xb07BA86d9f6eB62e1289a53e61F9c74DcD545b76" target="_blank">
+                0xb07BA86d9f6eB62e1289a53e61F9c74DcD545b76
               </a>
             </Col>
             <Col md={4}>

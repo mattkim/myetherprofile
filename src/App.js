@@ -23,6 +23,7 @@ import {
 import Home from './Home'
 import Header from './Header'
 import Profile from './Profile'
+import Migrations from './Migrations'
 import Me from './Me'
 import Footer from './Footer'
 
@@ -81,6 +82,7 @@ class App extends Component {
           <Header {...this.props}/>
           <Route exact path="/" render={(props) => (<Me {...props}/>)}/>
           <Route path="/profile/:address" render={(props) => (<Profile {...props}/>)}/>
+          <Route path="/migrations" render={(props) => (<Migrations {...props}/>)}/>
         </div>
         <Footer {...this.props}/>
       </div>
