@@ -119,7 +119,14 @@ class Header extends Component {
               }
               
               <span style={{ opacity: "0.1" }}> | </span>
-              <b>Network:</b> { NETWORK_IDS[this.props.networkId] || 'localhost'}
+              <b>Network:</b> { NETWORK_IDS[this.props.networkId] || (
+                <div style={{
+                  color: "red",
+                  fontStyle: "italic",
+                }}>
+                (Currently only Rinkeby network supported)
+                </div>
+              )}
           </Row>
         </Grid>
       </div>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
 
 import {
+  ETHERSCAN_LINKS,
   getEtherContractInstance,
   getEtherProfile,
   updateEtherProfile,
@@ -42,6 +43,7 @@ class Me extends Component {
     etherProfileInstance: React.PropTypes.object,
     setAccountCreated: React.PropTypes.func,
     setUser: React.PropTypes.func,
+    networkId: React.PropTypes.number,
   };
 
   constructor(props) {
@@ -57,6 +59,18 @@ class Me extends Component {
       aboutMe: "",
       email: "",
       imgurl: "",
+      submitStatus: (
+        <div style={{
+          color: "gray",
+          display: "block",
+          margin: "0 auto",
+          textAlign: "center",
+          width: "50%",
+          fontStyle: "italic",
+        }}>
+          (Transaction status will show here)<br/><br/>
+        </div>
+      ),
     }
 
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -89,13 +103,29 @@ class Me extends Component {
   }
 
   async handleSubmit(e) {
+    this.setState({
+      submitStatus: (
+        <div style={{
+          color: "blue",
+          display: "block",
+          margin: "0 auto",
+          textAlign: "center",
+          width: "50%",
+        }}>
+          Transaction submission pending... Transaction ID will automatically show here in a few seconds.  If it does not, find your transactions under the profile contract here:<br/>
+          <a href={
+            `${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/address/${this.state.contractAddress}`
+          } target="_blank">View contract on etherscan.io</a><br/><br/>
+        </div>
+      ),
+    });
     const name = this.state.name || this.props.user.name || "";
     const imgurl = this.state.imgurl || this.props.user.imgurl || "";
     const email = this.state.email || this.props.user.email || "";
     const aboutMe = this.state.aboutMe || this.props.user.aboutMe || "";
-    
+
     let res = await this.handleSingleSubmit();
-    
+
     // If we did not handle single submit reset the whole thing.
     if(!res) {
       res = await updateEtherProfile(
@@ -115,6 +145,38 @@ class Me extends Component {
         email,
         imgurl,
       });
+
+      const etherscanLink = `${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/tx/${res.tx}`;
+
+      this.setState({
+        submitStatus: (
+          <div style={{
+            color: "green",
+            display: "block",
+            margin: "0 auto",
+            textAlign: "center",
+            width: "50%",
+          }}>
+            Successfully submitted profile update!  Remember, transactions may take some time to complete.<br/>
+            tx: {res.tx}<br/>
+            <a href={etherscanLink} target="_blank">View transaction on etherscan.io</a><br/><br/>
+          </div>
+        )
+      })
+    } else {
+      this.setState({
+        submitStatus: (
+          <div style={{
+            color: "red",
+            display: "block",
+            margin: "0 auto",
+            textAlign: "center",
+            width: "50%",
+          }}>
+            Profile update not submitted!  Something went wrong...<br/><br/>
+          </div>
+        )
+      })
     }
     
     // TODO: set a status.
@@ -188,12 +250,13 @@ class Me extends Component {
                       width: "200px",
                     }}/>
                     <br/>
+                    {this.state.submitStatus || ""}
                     <b>Your Address:</b> {this.props.currentAddress}<br/>
                     <Link to={"/profile/" + this.props.currentAddress}>View your public profile</Link><br/>
-                    <a href={`https://etherscan.io/address/${this.props.currentAddress}`} target="_blank">View on etherscan.io</a><br/>
+                    <a href={`${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/address/${this.props.currentAddress}`} target="_blank">View user on etherscan.io</a><br/>
                     <br/>
                     <b>Profile Contract Address:</b> {this.state.contractAddress}<br/>
-                    <a href={`https://etherscan.io/address/${this.state.contractAddress}#code`} target="_blank">View on etherscan.io</a><br/>
+                    <a href={`${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/address/${this.state.contractAddress}#code`} target="_blank">View contract on etherscan.io</a><br/>
                     <br/>
                     <b>Image URL:</b> {this.props.user.imgurl || "No image"}<br/>
                     <FormControl  style={{
@@ -292,6 +355,7 @@ const mapStateToProps = state => {
     user: state.user,
     accountCreated: state.core.accountCreated,
     etherProfileInstance: state.core.etherProfileInstance,
+    networkId: state.core.networkId,
   }
 }
 

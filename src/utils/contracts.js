@@ -27,6 +27,10 @@ export const NETWORK_IDS = {
     7762959: "Musicoin Main Network",
 };
 
+export const ETHERSCAN_LINKS = {
+    4: "https://rinkeby.etherscan.io",
+};
+
 export async function getWeb3js() {
     try {
         const results = await getWeb3;
@@ -147,7 +151,7 @@ export async function updateEtherProfile(
         //     );
         // }
 
-        await instance.updateProfile(
+        const res = await instance.updateProfile(
             name,
             imgurl,
             email,
@@ -157,12 +161,7 @@ export async function updateEtherProfile(
             }
         );
 
-        return {
-            name,
-            imgurl,
-            email,
-            aboutMe,
-        };
+        return res;
     } catch(err) {
         console.log(err);
     }
@@ -175,14 +174,14 @@ export async function updateEtherProfileName(fromAddress, name) {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
 
-        await instance.updateProfileName(
+        const res = await instance.updateProfileName(
             name,
             {
                 from: fromAddress,
             }
         );
 
-        return name;
+        return res;
     } catch(err) {
         console.log(err);
     }
@@ -195,14 +194,14 @@ export async function updateEtherProfileImgurl(fromAddress, imgurl) {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
 
-        await instance.updateProfileImgurl(
+        const res = await instance.updateProfileImgurl(
             imgurl,
             {
                 from: fromAddress,
             }
         );
 
-        return imgurl;
+        return res;
     } catch(err) {
         console.log(err);
     }
@@ -215,14 +214,14 @@ export async function updateEtherProfileEmail(fromAddress, email) {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
 
-        await instance.updateProfileEmail(
+        const res = await instance.updateProfileEmail(
             email,
             {
                 from: fromAddress,
             }
         );
 
-        return email;
+        return res;
     } catch(err) {
         console.log(err);
     }
@@ -235,14 +234,14 @@ export async function updateEtherProfileAboutMe(fromAddress, aboutMe) {
         const web3 = await getWeb3js();
         const instance = await getEtherContractInstance(web3);
 
-        await instance.updateProfileAboutMe(
+        const res = await instance.updateProfileAboutMe(
             aboutMe,
             {
                 from: fromAddress,
             }
         );
 
-        return aboutMe;
+        return res;
     } catch(err) {
         console.log(err);
     }

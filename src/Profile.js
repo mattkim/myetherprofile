@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'; 
-import { simple, getEtherProfile } from './utils/contracts';
+import { ETHERSCAN_LINKS, simple, getEtherProfile } from './utils/contracts';
 import {
 	Grid,
 	Row,
@@ -22,6 +22,7 @@ import {
 class Profile extends Component {
   static propTypes = {
     etherProfileInstance: React.PropTypes.object,
+    networkId: React.PropTypes.number,
   };
 
   constructor(props) {
@@ -116,8 +117,8 @@ class Profile extends Component {
                     }}/>
                     <hr/>
                     <strong>Address:</strong> {this.props.match.params.address}<br/>
-                    <a href={"https://etherscan.io/address/" + this.props.match.params.address} target="_blank">
-                      View on etherscan.io
+                    <a href={`${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/address/${this.props.match.params.address}`} target="_blank">
+                      View user on etherscan.io
                     </a>
                     <br/><br/>
                     <strong>Name:</strong> {this.state.profileName}<br/>
@@ -151,6 +152,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
   return {
+    networkId: state.core.networkId,
     // etherProfileInstance: state.core.etherProfileInstance,
   }
 }
