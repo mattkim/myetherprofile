@@ -288,19 +288,23 @@ class Me extends Component {
     return (
     <div>
         <Grid style={{
-          margin: "0px",
+          // margin: "0px",
+          fontSize: ".9em",
           padding: "50px",
           paddingBottom: "100px",
           background: "#f7f7f7",
           fontFamily: "Arial, Helvetica, sans-serif",
         }}>
             <Row className="show-grid">
-                <Col md={9} lg={8}>
+                <Col lg={8}>
                   <div style={{
                     padding: "20px",
                     marginBottom: "20px",
                     background: "#ffffff",
                     boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}>
                     <h1 style={{
                       fontFamily: "\"Courier New\", Courier, monospace",
@@ -323,23 +327,28 @@ class Me extends Component {
                     <b>Image URL:</b> {this.props.user.imgurl || "No image"}<br/>
                     <FormControl  style={{
                       borderRadius: "0px",
+                      fontSize: ".9em",
                     }}placeholder="Image URL" type="text" value={this.state.imgurl} onChange={this.handleImgUrlChange}/><br/>
                     <b>Name:</b> {this.props.user.name || "Anonymous"}<br/>
                     <FormControl  style={{
                       borderRadius: "0px",
+                      fontSize: ".9em",
                     }}placeholder="Name" type="text" value={this.state.name} onChange={this.handleNameChange}/><br/>
                     <b>Email:</b> {this.props.user.email || "No email"}<br/>
                     <FormControl style={{
                       borderRadius: "0px",
+                      fontSize: ".9em",
                     }}placeholder="Email" type="text" value={this.state.email} onChange={this.handleEmailChange}/><br/>
                     <b>About Me:</b> {this.props.user.aboutMe || "No about me"}<br/>
                     <FormControl style={{
                       borderRadius: "0px",
+                      fontSize: ".9em",
                     }} placeholder="About Me" componentClass="textarea" value={this.state.aboutMe} onChange={this.handleAboutMeChange}/><br/>
                     <hr/>
                     <b>Gas Limit Estimate:</b> {this.state.gasEstimate}<br/>
                     <b>Gas Price in Gwei:</b> <i>(Lower to 1 Gwei for slower but cheaper transactions)</i> <FormControl style={{
                       borderRadius: "0px",
+                      fontSize: ".9em",
                     }} placeholder="Gas Price" type="text" value={this.state.gasPrice} onChange={this.handleGasPriceChange}/><br/>
                     <b>Total Ether:</b> {(parseInt(this.state.gasEstimate) * parseInt(this.state.gasPrice)) / 1000000000}<br/>
                     <a href="https://ethgasstation.info/" target="_blank">View ideal gas configs on ethgasstation.info</a><br/>
@@ -364,7 +373,7 @@ class Me extends Component {
                     }}>Commit</Button>
                   </div>
                 </Col>
-                <Col md={3} lg={4}>
+                <Col lg={4}>
                   <div style={{
                     padding: "20px",
                     background: "#ffffff",

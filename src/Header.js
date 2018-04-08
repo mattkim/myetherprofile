@@ -72,7 +72,7 @@ class Header extends Component {
         borderBottom: "solid 2px #eee",
       }}>
         <Grid style={{
-          margin: "0px",
+          // margin: "0px",
           padding: "20px",
         }}>
           <Row>
@@ -88,10 +88,11 @@ class Header extends Component {
             <Col md={6}>
             <Form autoComplete="off" onSubmit={this.handleFormSubmit}>
               <InputGroup className="pull-right" style={{
+                float: "right",
                 width: "350px",
                 marginBottom: "10px",
               }}>
-                <FormControl style={{borderRadius: "0px"}} placeholder="Lookup Profile by Address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
+                <FormControl style={{borderRadius: "0px", fontSize: "0.8em",}} placeholder="Lookup Profile by Address" type="text" value={this.state.search} onChange={this.handleSearchChange}/>
                 <InputGroup.Button>
                   <Button onClick={this.handleGo} style={{
                     background: "#3498db",
@@ -108,6 +109,7 @@ class Header extends Component {
             textAlign: "right",
             fontFamily: "Arial, Helvetica, sans-serif",
             color: "#666666",
+            fontSize: "0.9em",
           }}>
               <b>Your address: </b> 
               {
@@ -117,8 +119,7 @@ class Header extends Component {
                   </Link>
                 : "address not found"
               }
-              
-              <span style={{ opacity: "0.1" }}> | </span>
+              <span style={{width: "20px"}}/>
               <b>Network:</b> { NETWORK_IDS[this.props.networkId] || (
                 <div style={{
                   color: "red",

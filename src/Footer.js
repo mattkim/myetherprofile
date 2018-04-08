@@ -66,20 +66,20 @@ class Footer extends Component {
         background: "#102138",
         borderTop: "solid 2px #eee",
         color: "white",
-        margin: "0px",
-        // marginTop: "100px",
-        // padding: "20px",
+        fontSize: "0.8em",
       }}>
-        <Grid style={{
-          margin: "0px",
-        }}>
+        <Grid style={{}}>
           <Row style={{
             margin: "0",
           }}>
-            <Col md={4}>
+            <Col lg={2}>
               MyEtherProfile © 2018<br/>
             </Col>
-            <Col md={4}>
+            <Col lg={5} style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}>
               Eth Donations: <a style={{
                 color: "#7fe5ff",
               }}
@@ -87,7 +87,12 @@ class Footer extends Component {
                 0xb07BA86d9f6eB62e1289a53e61F9c74DcD545b76
               </a>
             </Col>
-            <Col md={4}>
+            <Col lg={5}
+             style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}>
               Contact Us: <a style={{
                 color: "#7fe5ff",
               }} href="mailto:info@myetherprofile.com">info@myetherprofile.com</a><br/>

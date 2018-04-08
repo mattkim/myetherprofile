@@ -115,20 +115,24 @@ class Profile extends Component {
     return (
     <div>
         <Grid style={{
-          margin: "0px",
+          // margin: "0px",
+          fontSize: ".9em",
           padding: "50px",
           paddingBottom: "100px",
           fontFamily: "Arial, Helvetica, sans-serif",
           background: "#f7f7f7",
         }}>
             <Row className="show-grid">
-                <Col xs={3} sm={3} md={4}/>
-                <Col xs={6} sm={6} md={4}>
+                <Col md={3} lg={3}/>
+                <Col md={6} lg={6}>
                   <div style={{
                     padding: "20px",
                     marginBottom: "20px",
                     background: "#ffffff",
                     boxShadow: "16px 16px 47px 2px rgba(0,0,0,.07)",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}>
                     <img src={this.state.profileImgurl}  style={{
                       display: "block",
@@ -139,14 +143,13 @@ class Profile extends Component {
                     <strong>Address:</strong> {this.props.match.params.address}<br/>
                     <a href={`${ETHERSCAN_LINKS[this.props.networkId] || "https://etherscan.io"}/address/${this.props.match.params.address}`} target="_blank">
                       View user on etherscan.io
-                    </a>
-                    <br/><br/>
+                    </a><br/><br/>
                     <strong>Name:</strong> {this.state.profileName}<br/>
                     <strong>Email:</strong> {this.state.profileEmail}<br/>
                     <strong>About Me:</strong> {this.state.profileAboutMe}<br/>
                   </div>
                 </Col>
-                <Col xs={3} sm={3} md={4}/>
+                <Col md={3} lg={3}/>
             </Row>
         </Grid>
     </div>
