@@ -72,7 +72,6 @@ class Header extends Component {
         borderBottom: "solid 2px #eee",
       }}>
         <Grid style={{
-          // margin: "0px",
           padding: "20px",
         }}>
           <Row>

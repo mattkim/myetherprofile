@@ -288,7 +288,6 @@ class Me extends Component {
     return (
     <div>
         <Grid style={{
-          // margin: "0px",
           fontSize: ".9em",
           padding: "50px",
           paddingBottom: "100px",
